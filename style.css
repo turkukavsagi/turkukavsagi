@@ -1,0 +1,533 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+    color: #1e293b;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.screen {
+    display: none;
+    width: 100vw;
+    min-height: 100vh;
+    padding: 16px 20px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* Harita / İlçe Seçim Ekranı Düzeni */
+.main-header {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.main-header h1 {
+    font-size: 36px;
+    color: #0369a1;
+    margin-bottom: 12px;
+}
+
+.main-header p {
+    font-size: 18px;
+    color: #475569;
+}
+
+.map-selection-container {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 900px;
+}
+
+.district-box {
+    background: white;
+    width: 240px;
+    height: 240px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(3, 105, 161, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 3px solid transparent;
+}
+
+.district-box:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(3, 105, 161, 0.25);
+    border-color: #0ea5e9;
+}
+
+.box-icon {
+    font-size: 56px;
+    margin-bottom: 15px;
+}
+
+.district-box h2 {
+    font-size: 24px;
+    color: #0f172a;
+    margin-bottom: 5px;
+}
+
+.district-box p {
+    font-size: 14px;
+    color: #64748b;
+    text-align: center;
+    padding: 0 10px;
+}
+
+/* Oyun Ekranı Stilleri (Öncekiyle aynı) */
+.game-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    margin-bottom: 15px;
+}
+
+.back-btn {
+    padding: 10px 20px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+#district-title {
+    font-size: 24px;
+    color: #0369a1;
+}
+
+.answers-wrapper {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.instruction-text {
+    font-size: 14px;
+    color: #334155;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.answers-container {
+    display: flex;
+    gap: 15px;
+    background: white;
+    padding: 12px 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    min-height: 70px;
+    align-items: center;
+    justify-content: center;
+}
+
+.draggable-item {
+    background: #0ea5e9;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: grab;
+    font-weight: bold;
+    font-size: 15px;
+    box-shadow: 0 4px 6px rgba(14, 165, 233, 0.2);
+    user-select: none;
+}
+
+/* Tahta ekrana sığacak şekilde JS ile ölçeklenir (900x540 tasarım boyutu) */
+.board-wrap {
+    width: 900px;
+    height: 540px;
+    flex-shrink: 0;
+}
+
+.intersection-board {
+    position: relative;
+    width: 900px;
+    height: 540px;
+    transform-origin: top left;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 30px;
+    border: 3px solid #e2e8f0;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+/* Kavşak görseli (SVG) arka planda durur */
+.roundabout-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* 4 çıkış: kutucuklar yolların uç kısımlarında, kavşağın dışında */
+.road-slot {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 2;
+}
+
+.slot-top    { top: 8px;    left: 50%; transform: translateX(-50%); flex-direction: row; }
+.slot-bottom { bottom: 8px; left: 50%; transform: translateX(-50%); flex-direction: row; }
+.slot-left   { left: 10px;  top: 50%;  transform: translateY(-50%); flex-direction: column; width: 190px; }
+.slot-right  { right: 10px; top: 50%;  transform: translateY(-50%); flex-direction: column; width: 190px; }
+
+.hint-box {
+    background: white;
+    padding: 8px 12px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    max-width: 270px;
+    text-align: center;
+    color: #1e293b;
+    border: 2px solid #f1f5f9;
+}
+
+.slot-left .hint-box,
+.slot-right .hint-box {
+    width: 100%;
+    max-width: none;
+}
+
+.drop-zone {
+    width: 170px;
+    height: 48px;
+    border: 2px dashed #94a3b8;
+    background: #ffffff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 600;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    transition: all 0.2s ease;
+}
+
+.drop-zone.drag-over {
+    background: #dcfce7;
+    border-color: #22c55e;
+}
+
+.action-footer {
+    margin-top: 14px;
+    padding-bottom: 10px;
+}
+
+#check-btn {
+    padding: 14px 35px;
+    background: #22c55e;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.3);
+}
+
+/* ===== Trabzon İlçe Haritası ===== */
+#map-screen { padding: 8px 12px; }
+#map-screen .main-header { margin-top: 4px; margin-bottom: 8px; }
+#map-screen .main-header h1 { font-size: 28px; margin-bottom: 2px; }
+#map-screen .main-header p { font-size: 15px; }
+
+.map-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.map-card {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 24px;
+    padding: 6px 10px;
+    box-shadow: 0 10px 25px rgba(3, 105, 161, 0.15);
+}
+
+#trabzon-map {
+    display: block;
+    height: calc(100vh - 110px);
+    width: auto;
+    max-width: 96vw;
+    min-height: 300px;
+}
+
+.district { outline: none; }
+
+.district path {
+    stroke: #334155;
+    stroke-width: 1.2;
+    stroke-linejoin: round;
+    transition: filter 0.15s ease, fill-opacity 0.15s ease, stroke-width 0.15s ease;
+}
+
+.district text {
+    text-anchor: middle;
+    dominant-baseline: central;
+    font-weight: 800;
+    fill: #0f172a;
+    paint-order: stroke;
+    stroke: rgba(255, 255, 255, 0.55);
+    stroke-width: 2.5px;
+    stroke-linejoin: round;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Henüz sorusu olmayan ilçeler soluk görünür */
+.district:not(.playable) { cursor: not-allowed; }
+.district:not(.playable) path { fill-opacity: 0.4; filter: saturate(0.6); }
+.district:not(.playable) text { fill: #475569; font-weight: 700; }
+
+/* Oynanabilir ilçeler */
+.district.playable { cursor: pointer; }
+.district.playable path { stroke-width: 1.8; }
+.district.playable:hover path,
+.district.playable:focus-visible path {
+    stroke: #0369a1;
+    stroke-width: 3.2;
+    filter: brightness(1.08) drop-shadow(0 4px 6px rgba(3, 105, 161, 0.5));
+}
+
+.toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translate(-50%, 20px);
+    background: #1e293b;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 50;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ===== Türkü ses çubuğu (doğru çözümde görünür) ===== */
+.action-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.now-playing {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+}
+.now-playing.show { display: flex; }
+.now-playing audio { height: 34px; max-width: 260px; }
+.now-playing.missing { background: #fef3c7; color: #92400e; }
+.now-playing.missing audio { display: none; }
+
+/* ===== Kavşağın yeşil alanlarındaki kelime görselleri ===== */
+.green-spot {
+    position: absolute;
+    z-index: 2;
+    width: 196px;
+    height: 174px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 3px 8px rgba(22, 101, 52, 0.30);
+    pointer-events: none;
+}
+/* Fotoğraflar yeşil alanı tamamen kaplar (900x540 tasarım alanında, kenarlık içi koordinat) */
+.spot-0 { left: 19px; top: 13px; }
+.spot-1 { left: 679px; top: 13px; }
+.spot-2 { left: 679px; top: 347px; }
+.spot-3 { left: 19px; top: 347px; }
+
+.green-spot img {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* fotoğrafın tamamı görünür */
+}
+/* Boş kalan kenarlar aynı fotoğrafın bulanık hali ile dolar */
+.green-spot::before {
+    content: "";
+    position: absolute;
+    inset: -12px;
+    background: var(--bg) center / cover no-repeat;
+    filter: blur(10px) brightness(0.95);
+}
+
+/* Kelimenin adı, bulmaca çözülünce fotoğrafın altında görünür */
+.spot-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 12px 8px 4px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.intersection-board.solved .spot-caption { opacity: 1; }
+.intersection-board.solved .green-spot { animation: spot-pop 0.7s ease; }
+
+@keyframes spot-pop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.06); }
+    100% { transform: scale(1); }
+}
+
+/* Alçak ekranlarda (ör. küçük dizüstü) üst kısmı sıkıştır, kavşak daha büyük görünsün */
+@media (max-height: 720px) {
+    .game-header { margin-bottom: 4px; }
+    .back-btn { padding: 6px 14px; font-size: 14px; }
+    #district-title { font-size: 20px; }
+    .answers-wrapper { margin-bottom: 6px; }
+    .instruction-text { display: none; }
+    .answers-container { padding: 6px 16px; min-height: 0; gap: 10px; }
+    .draggable-item { padding: 6px 14px; }
+    .action-footer { margin-top: 6px; padding-bottom: 4px; }
+    #check-btn { padding: 8px 28px; font-size: 16px; }
+}
+
+/* Dokunmatik seçim: seçili kart vurgusu ve kolay dokunma */
+.draggable-item { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.draggable-item.selected { outline: 4px solid #facc15; transform: scale(1.08); }
+.drop-zone { cursor: pointer; }
+
+/* Dikey tutulan telefonlarda yatay çevirme uyarısı (tablet ve bilgisayarda görünmez) */
+#rotate-hint { display: none; }
+@media (max-width: 700px) and (orientation: portrait) {
+    #rotate-hint {
+        display: flex; position: fixed; inset: 0; z-index: 9999;
+        align-items: center; justify-content: center; text-align: center;
+        background: #0369a1; color: #fff; font-size: 22px; font-weight: 800; padding: 30px; line-height: 1.6;
+    }
+    #rotate-hint div { max-width: 280px; }
+}
+
+/* Dikey telefonda yalnızca "yatay çevir" uyarısı görünür */
+@media (max-width: 700px) and (orientation: portrait) {
+    body > *:not(#rotate-hint) { display: none !important; }
+}
+
+/* Yatay telefon (çok alçak ekran): üst kısım iyice sıkışır, kavşak daha büyük olur */
+@media (max-height: 450px) {
+    body { padding-top: 4px !important; }
+    .game-header { margin-bottom: 2px; padding: 0 8px; }
+    .back-btn { padding: 4px 10px; font-size: 12px; }
+    #district-title { font-size: 15px; }
+    .answers-wrapper { margin-bottom: 3px; }
+    .answers-container { padding: 4px 10px; gap: 8px; border-radius: 10px; }
+    .draggable-item { padding: 5px 11px; font-size: 13px; }
+    .action-footer { margin-top: 3px; padding-bottom: 2px; }
+    #check-btn { padding: 6px 22px; font-size: 14px; }
+}
+
+/* ===== Soru - cevap kutusu - fotoğraf eşleşmesi: aynı renk ve aynı numara ===== */
+.slot-top,    .spot-0 { --c: #f97316; } /* 1: turuncu */
+.slot-right,  .spot-1 { --c: #8b5cf6; } /* 2: mor */
+.slot-bottom, .spot-2 { --c: #ec4899; } /* 3: pembe */
+.slot-left,   .spot-3 { --c: #0d9488; } /* 4: yeşil-mavi */
+
+.hint-box, .drop-zone { position: relative; }
+.hint-box {
+    border: 3px solid var(--c);
+    background: color-mix(in srgb, var(--c) 9%, white);
+}
+.drop-zone {
+    border: 3px dashed var(--c);
+    background: color-mix(in srgb, var(--c) 12%, white);
+    color: #475569;
+}
+.drop-zone.drag-over { background: #fef9c3; border-color: var(--c); }
+.drop-zone.filled {
+    border-style: solid;
+    background: #ffffff;
+    color: #0f172a;
+    font-weight: 800;
+}
+
+/* Numara rozetleri */
+.slot-top .hint-box::before,    .slot-top .drop-zone::before    { content: "1"; }
+.slot-right .hint-box::before,  .slot-right .drop-zone::before  { content: "2"; }
+.slot-bottom .hint-box::before, .slot-bottom .drop-zone::before { content: "3"; }
+.slot-left .hint-box::before,   .slot-left .drop-zone::before   { content: "4"; }
+.hint-box::before, .drop-zone::before, .spot-num {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--c);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 24px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    z-index: 3;
+}
+.spot-num { top: 6px; left: 6px; width: 26px; height: 26px; line-height: 26px; font-size: 15px; border: 2px solid #fff; box-sizing: border-box; line-height: 22px; }
+
+/* Fotoğraf çerçevesi de aynı renkte */
+.green-spot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 4px solid var(--c);
+    border-radius: 16px;
+    z-index: 2;
+}
+.spot-caption { z-index: 3; }
+
+/* Henüz verisi olmayan ilçeler haritada beyaz */
+.district:not(.playable) path { fill: #ffffff; fill-opacity: 1; filter: none; }
+.district:not(.playable) text { fill: #64748b; }
+
+/* Numaralar kaldırıldı: eşleşme yalnızca renkle gösterilir */
+.hint-box::before, .drop-zone::before, .spot-num { display: none !important; }

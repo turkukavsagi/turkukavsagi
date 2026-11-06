@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Türkü Kavşağında Yerelle Dijital Buluşma</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- SortableJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <!-- Konfeti Kütüphanesi -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <!-- 1. EKRAN: TRABZON İLÇE SEÇİM EKRANI -->
+    <div id="map-screen" class="screen active">
+        <header class="main-header">
+            <h1>🎶 Türkü Kavşağında Yerelle Dijital Buluşma</h1>
+            <p>Sınıf Etkinliği: Keşfetmek istediğin ilçeye tıkla ve bulmacaya başla!</p>
+        </header>
+        
+        <!-- İlçe Haritası: ilçeye tıklayınca bulmaca açılır -->
+        <div class="map-container">
+            <div class="map-card">
+        <svg id="trabzon-map" viewBox="67 78 905 537" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Trabzon ilçeler haritası">
+            <g class="district" data-key="salpazari" data-name="Şalpazarı" tabindex="-1" role="button" aria-label="Şalpazarı">
+                <title>Şalpazarı</title>
+                <path d="M98,176 L92,186 L90,196 L84,209 L82,217 L82,282 L81,283 L82,310 L90,332 L92,352 L100,368 L120,385 L127,389 L130,389 L131,387 L130,348 L131,340 L134,332 L134,324 L123,307 L120,291 L121,193 L120,188 L115,182Z" fill="#e7e61c"/>
+                <text x="103" y="285" font-size="14" transform="rotate(-90 103 285)">Şalpazarı</text>
+            </g>
+            <g class="district" data-key="besikduzu" data-name="Beşikdüzü" tabindex="-1" role="button" aria-label="Beşikdüzü">
+                <title>Beşikdüzü</title>
+                <path d="M120,120 L114,126 L108,142 L101,151 L99,175 L115,181 L121,188 L122,193 L121,228 L122,229 L148,228 L150,227 L149,190 L151,181 L157,168 L159,138 L156,135 L152,135 L149,132 L147,125 L139,119Z" fill="#f6dacc"/>
+                <text x="135" y="186" font-size="12" transform="rotate(-90 135 186)">Beşikdüzü</text>
+            </g>
+            <g class="district" data-key="tonya" data-name="Tonya" tabindex="-1" role="button" aria-label="Tonya">
+                <title>Tonya</title>
+                <path d="M121,229 L122,300 L125,309 L135,324 L135,332 L133,336 L131,348 L132,387 L130,390 L135,395 L143,410 L154,421 L168,427 L176,428 L177,426 L177,400 L181,390 L203,368 L218,361 L233,346 L238,338 L238,333 L230,315 L220,303 L216,296 L213,272 L206,255 L199,244 L191,240 L177,237 L165,231 L151,228 L138,230 L122,230Z" fill="#eac415"/>
+                <text x="167" y="278" font-size="17">Tonya</text>
+            </g>
+            <g class="district" data-key="vakfikebir" data-name="Vakfıkebir" tabindex="-1" role="button" aria-label="Vakfıkebir">
+                <title>Vakfıkebir</title>
+                <path d="M160,139 L158,168 L152,181 L150,190 L151,227 L165,230 L177,236 L196,241 L204,249 L214,272 L228,264 L234,258 L242,245 L244,244 L245,238 L261,208 L261,205 L248,196 L212,159 L196,138 L181,139 L174,141 L167,141Z" fill="#f1cf64"/>
+                <text x="205" y="200" font-size="14">Vakfıkebir</text>
+            </g>
+            <g class="district" data-key="carsibasi" data-name="Çarşıbaşı" tabindex="-1" role="button" aria-label="Çarşıbaşı">
+                <title>Çarşıbaşı</title>
+                <path d="M258,100 L240,115 L236,115 L220,126 L214,129 L208,129 L196,137 L213,159 L248,195 L261,204 L262,202 L262,102 L261,100Z" fill="#7ee72d"/>
+                <text x="238" y="146" font-size="12" transform="rotate(-30 238 146)">Çarşıbaşı</text>
+            </g>
+            <g class="district" data-key="duzkoy" data-name="Düzköy" tabindex="-1" role="button" aria-label="Düzköy">
+                <title>Düzköy</title>
+                <path d="M214,273 L217,296 L221,303 L231,315 L239,335 L270,336 L280,334 L289,329 L297,327 L300,302 L304,292 L304,284 L299,274 L295,270 L282,267 L265,259 L247,246 L243,245 L238,254 L228,265Z" fill="#f6dacc"/>
+                <text x="266" y="311" font-size="14.2">Düzköy</text>
+            </g>
+            <g class="district" data-key="akcaabat" data-name="Akçaabat" tabindex="-1" role="button" aria-label="Akçaabat">
+                <title>Akçaabat</title>
+                <path d="M269,92 L264,94 L261,98 L263,102 L263,202 L262,208 L246,238 L245,244 L263,257 L282,266 L295,269 L300,274 L305,284 L305,292 L301,302 L298,327 L311,326 L333,317 L345,315 L365,305 L378,293 L384,284 L384,265 L383,264 L384,216 L392,195 L394,171 L383,165 L375,165 L367,161 L360,152 L360,150 L328,119 L327,114 L321,111 L314,104 L311,104 L289,96 L280,97 L276,92Z" fill="#eebb4c"/>
+                <text x="339" y="252" font-size="17">Akçaabat</text>
+            </g>
+            <g class="district" data-key="macka" data-name="Maçka" tabindex="-1" role="button" aria-label="Maçka">
+                <title>Maçka</title>
+                <path d="M488,293 L472,288 L455,280 L437,278 L430,276 L423,272 L414,271 L385,283 L379,293 L368,304 L345,316 L333,318 L311,327 L292,329 L276,336 L270,337 L239,336 L234,346 L218,362 L203,369 L182,390 L178,400 L178,413 L177,414 L178,415 L178,426 L176,430 L185,444 L202,461 L224,472 L242,476 L272,492 L288,495 L299,501 L314,504 L339,516 L350,523 L357,523 L365,525 L411,550 L420,552 L432,552 L441,550 L458,541 L467,532 L470,524 L471,515 L478,499 L480,486 L487,471 L490,455 L497,442 L497,438 L494,436 L479,405 L477,397 L477,366 L478,360 L486,339Z" fill="#f6cede"/>
+                <text x="276" y="409" font-size="17">Maçka</text>
+            </g>
+            <g class="district" data-key="merkez" data-name="Merkez" tabindex="-1" role="button" aria-label="Merkez">
+                <title>Merkez</title>
+                <path d="M523,193 L521,191 L518,191 L510,185 L503,183 L498,179 L477,180 L473,178 L470,174 L464,173 L462,171 L450,173 L435,182 L430,182 L425,185 L413,183 L405,174 L395,172 L393,195 L385,216 L385,231 L384,232 L385,282 L399,277 L410,271 L419,270 L433,276 L455,279 L467,285 L487,292 L488,288 L487,287 L486,255 L488,241 L492,234 L513,211 L520,201Z" fill="#f5f893"/>
+                <text x="414" y="237" font-size="17">Merkez</text>
+            </g>
+            <g class="district" data-key="yomra" data-name="Yomra" tabindex="-1" role="button" aria-label="Yomra">
+                <title>Yomra</title>
+                <path d="M529,193 L524,193 L521,201 L511,215 L493,234 L488,245 L487,255 L488,287 L489,288 L488,328 L486,343 L481,354 L478,366 L478,397 L480,405 L495,436 L498,438 L513,421 L515,415 L532,385 L542,361 L543,345 L545,337 L559,309 L562,296 L562,219 L555,219 L553,217 L546,216 L533,203 L533,197Z" fill="#ea7d35"/>
+                <text x="525" y="256" font-size="17">Yomra</text>
+            </g>
+            <g class="district" data-key="arsin" data-name="Arsin" tabindex="-1" role="button" aria-label="Arsin">
+                <title>Arsin</title>
+                <path d="M632,211 L611,213 L592,219 L572,219 L571,218 L563,219 L563,296 L562,303 L546,337 L544,345 L543,361 L541,367 L535,378 L533,385 L514,419 L514,421 L521,425 L532,437 L537,434 L543,417 L547,410 L574,382 L578,376 L597,337 L599,329 L600,292 L603,285 L618,269 L626,257 L631,236 L633,217 L635,215Z" fill="#81e359"/>
+                <text x="594" y="249" font-size="14" transform="rotate(-68 594 249)">Arsin</text>
+            </g>
+            <g class="district" data-key="arakli" data-name="Araklı" tabindex="-1" role="button" aria-label="Araklı">
+                <title>Araklı</title>
+                <path d="M658,215 L652,216 L636,215 L634,217 L632,236 L627,257 L619,269 L604,285 L601,292 L600,329 L598,337 L579,376 L575,382 L548,410 L544,417 L538,434 L533,438 L531,475 L525,488 L525,498 L531,503 L537,504 L560,503 L566,505 L573,514 L582,533 L590,541 L607,550 L618,550 L623,547 L628,541 L634,527 L634,518 L621,499 L620,487 L624,479 L628,475 L638,469 L634,453 L628,440 L627,403 L629,395 L654,344 L656,314 L663,297 L665,287 L664,231 L666,228 L665,219Z" fill="#84df85"/>
+                <text x="587" y="477" font-size="17">Araklı</text>
+            </g>
+            <g class="district" data-key="surmene" data-name="Sürmene" tabindex="-1" role="button" aria-label="Sürmene">
+                <title>Sürmene</title>
+                <path d="M767,246 L760,246 L750,252 L736,252 L731,254 L710,254 L708,252 L704,252 L702,250 L694,250 L689,247 L681,240 L675,231 L672,231 L669,229 L665,231 L666,287 L664,297 L657,314 L655,344 L630,395 L628,403 L628,434 L630,443 L637,459 L639,470 L657,484 L661,482 L671,465 L674,454 L674,375 L676,366 L681,357 L684,348 L694,328 L700,321 L705,318 L719,316 L759,317 L760,301 L766,288 L768,279 L768,248Z" fill="#d8c5c0"/>
+                <text x="704" y="289" font-size="15">Sürmene</text>
+            </g>
+            <g class="district" data-key="koprubasi" data-name="Köprübaşı" tabindex="-1" role="button" aria-label="Köprübaşı">
+                <title>Köprübaşı</title>
+                <path d="M758,318 L719,317 L718,318 L708,318 L703,320 L695,328 L676,369 L675,375 L675,454 L672,465 L659,486 L670,501 L677,516 L692,536 L698,541 L701,541 L714,528 L719,521 L739,478 L740,422 L749,397 L748,364 L758,341 L759,319Z" fill="#ea25d7"/>
+                <text x="717" y="359" font-size="14" transform="rotate(-82 717 359)">Köprübaşı</text>
+            </g>
+            <g class="district" data-key="dernekpazari" data-name="Dernekpazarı" tabindex="-1" role="button" aria-label="Dernekpazarı">
+                <title>Dernekpazarı</title>
+                <path d="M750,360 L750,363 L759,365 L778,365 L779,366 L843,365 L852,362 L860,346 L860,338 L851,320 L836,318 L787,318 L778,320 L769,325 L760,327 L758,345Z" fill="#95c4eb"/>
+                <text x="808" y="344" font-size="13">Dernekpazarı</text>
+            </g>
+            <g class="district" data-key="caykara" data-name="Çaykara" tabindex="-1" role="button" aria-label="Çaykara">
+                <title>Çaykara</title>
+                <path d="M749,364 L750,397 L741,422 L740,478 L720,521 L715,528 L700,543 L700,553 L699,558 L693,570 L691,589 L693,591 L722,591 L746,600 L771,601 L785,599 L797,593 L812,589 L827,591 L848,590 L868,582 L916,580 L928,574 L937,572 L939,570 L939,510 L937,495 L935,492 L928,491 L906,479 L871,444 L864,435 L853,411 L852,366 L851,364 L831,367 L779,367 L778,366 L759,366Z" fill="#eca735"/>
+                <text x="801" y="443" font-size="17">Çaykara</text>
+            </g>
+            <g class="district" data-key="of" data-name="Of" tabindex="-1" role="button" aria-label="Of">
+                <title>Of</title>
+                <path d="M871,198 L863,192 L849,186 L843,186 L834,198 L827,205 L818,211 L813,217 L801,223 L789,234 L767,245 L769,248 L769,279 L767,288 L761,301 L759,318 L760,326 L763,326 L778,319 L787,317 L836,317 L851,319 L854,260 L865,238 L882,219 L882,213 L879,207Z" fill="#e9728c"/>
+                <text x="826" y="246" font-size="17">Of</text>
+            </g>
+            <g class="district" data-key="hayrat" data-name="Hayrat" tabindex="-1" role="button" aria-label="Hayrat">
+                <title>Hayrat</title>
+                <path d="M883,219 L864,241 L855,260 L854,265 L854,291 L853,292 L852,322 L861,338 L861,346 L852,363 L854,411 L867,438 L897,470 L909,480 L928,490 L936,492 L947,471 L949,459 L957,440 L958,434 L957,398 L950,383 L947,368 L940,352 L938,331 L931,314 L930,296 L928,288 L912,257 L910,250 L899,228 L891,219Z" fill="#ea7d35"/>
+                <text x="900" y="357" font-size="17">Hayrat</text>
+            </g>
+        </svg>
+            </div>
+        </div>
+
+        <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </div>
+
+    <!-- 2. EKRAN: KAVŞAK VE BİLMECE OYUNU -->
+    <div id="puzzle-screen" class="screen">
+        <header class="game-header">
+            <button class="back-btn" onclick="goBackToMap()">⬅ Haritaya Dön</button>
+            <h2 id="district-title">İlçe Adı</h2>
+        </header>
+
+        <!-- ÜST KISIM: Sürüklenebilir Cevap Kartları -->
+        <div class="answers-wrapper">
+            <p class="instruction-text">Aşağıdaki etiketleri uygun yollardaki kutucuklara sürükle:</p>
+            <div class="answers-container" id="draggable-answers"></div>
+        </div>
+
+        <!-- ORTA KISIM: Kavşak ve Yollar (Drop Zones) -->
+        <div class="board-wrap" id="board-wrap">
+        <div class="intersection-board" id="board">
+
+            <!-- 4 çıkışlı kavşak görseli (900x540) -->
+            <svg class="roundabout-svg" viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- Köşelerdeki çimenlik alanlar -->
+
+                <!-- Yollar -->
+                <g fill="#4b5563">
+                    <rect x="415" y="85" width="70" height="370"/>
+                    <rect x="210" y="235" width="480" height="70"/>
+                </g>
+                <!-- Yol kenar çizgileri -->
+                <g stroke="#e5e7eb" stroke-width="3" fill="none">
+                    <path d="M415 85 V150 M485 85 V150 M415 390 V455 M485 390 V455"/>
+                    <path d="M210 235 H330 M210 305 H330 M570 235 H690 M570 305 H690"/>
+                </g>
+
+                <!-- Dönel kavşak şeridi -->
+                <circle cx="450" cy="270" r="125" fill="#4b5563"/>
+                <circle cx="450" cy="270" r="122" fill="none" stroke="#f8fafc" stroke-width="3"/>
+                <circle cx="450" cy="270" r="106" fill="none" stroke="#f8fafc" stroke-width="3" stroke-dasharray="16 12"/>
+
+                <!-- Yol ortası kesikli çizgiler -->
+                <g stroke="#f8fafc" stroke-width="3" stroke-dasharray="14 12">
+                    <path d="M450 90 V145 M450 395 V450"/>
+                    <path d="M215 270 H325 M575 270 H685"/>
+                </g>
+
+                <!-- Yaya geçitleri -->
+                <g stroke="#f8fafc" stroke-width="16" stroke-dasharray="7 7">
+                    <path d="M415 122 H485"/>
+                    <path d="M415 418 H485"/>
+                    <path d="M298 235 V305"/>
+                    <path d="M602 235 V305"/>
+                </g>
+
+                <!-- Orta ada -->
+                <circle cx="450" cy="270" r="88" fill="#e7d3b0" stroke="#f8fafc" stroke-width="3"/>
+                <circle cx="450" cy="270" r="76" fill="#86c768"/>
+                <circle cx="450" cy="270" r="50" fill="none" stroke="#6aa84f" stroke-width="2" stroke-dasharray="4 5"/>
+                <g fill="#3f8f3a">
+                    <circle cx="450" cy="212" r="12"/><circle cx="450" cy="328" r="12"/>
+                    <circle cx="392" cy="270" r="12"/><circle cx="508" cy="270" r="12"/>
+                </g>
+                <circle cx="450" cy="270" r="36" fill="#22a6c9" stroke="#f8fafc" stroke-width="4"/>
+                <text x="450" y="276" text-anchor="middle" font-size="17" font-weight="800" fill="#ffffff">Kavşak</text>
+            </svg>
+
+            <!-- Yeşil alanlardaki kelime görselleri (sırayla: sol üst, sağ üst, sağ alt, sol alt = 1., 2., 3., 4. soru) -->
+            <div class="green-spot spot-0"><span class="spot-num">1</span><img alt=""><span class="spot-caption"></span></div>
+            <div class="green-spot spot-1"><span class="spot-num">2</span><img alt=""><span class="spot-caption"></span></div>
+            <div class="green-spot spot-2"><span class="spot-num">3</span><img alt=""><span class="spot-caption"></span></div>
+            <div class="green-spot spot-3"><span class="spot-num">4</span><img alt=""><span class="spot-caption"></span></div>
+
+            <!-- Çıkış 1: Üst -->
+            <div class="road-slot slot-top" data-index="0">
+                <div class="hint-box"><span class="hint-text">İpucu 1</span></div>
+                <div class="drop-zone" data-id="0">Cevabı Buraya Bırak</div>
+            </div>
+
+            <!-- Çıkış 2: Sağ -->
+            <div class="road-slot slot-right" data-index="1">
+                <div class="hint-box"><span class="hint-text">İpucu 2</span></div>
+                <div class="drop-zone" data-id="1">Cevabı Buraya Bırak</div>
+            </div>
+
+            <!-- Çıkış 3: Alt -->
+            <div class="road-slot slot-bottom" data-index="2">
+                <div class="hint-box"><span class="hint-text">İpucu 3</span></div>
+                <div class="drop-zone" data-id="2">Cevabı Buraya Bırak</div>
+            </div>
+
+            <!-- Çıkış 4: Sol -->
+            <div class="road-slot slot-left" data-index="3">
+                <div class="hint-box"><span class="hint-text">İpucu 4</span></div>
+                <div class="drop-zone" data-id="3">Cevabı Buraya Bırak</div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Kontrol Butonu -->
+        <div class="action-footer">
+            <button id="check-btn" onclick="checkAnswers()">Cevapları Kontrol Et ✨</button>
+
+            <!-- Doğru çözümde türkü adı ve ses çalar burada görünür -->
+            <div id="now-playing" class="now-playing">
+                <span id="now-playing-text"></span>
+                <audio id="turku-audio" controls preload="none"></audio>
+            </div>
+        </div>
+    </div>
+
+    <!-- Telefon dikey tutulduğunda gösterilir -->
+    <div id="rotate-hint"><div>📱↻<br>Oyunu oynamak için telefonu yatay çevir</div></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
